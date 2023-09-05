@@ -9,10 +9,6 @@ class CountryNotFoundError(Exception):
     pass
 
 
-class IATACodeError(Exception):
-    pass
-
-
 class NoOptionsFoundError(Exception):
     pass
 
@@ -23,10 +19,12 @@ class MultipleOptionsError(Exception):
 
 def search_airport(data_file, **kwargs):
     # Валідація аргументів
-    if sum(arg is not None for arg in kwargs.values()) != 1:
-        raise MultipleOptionsError("Exactly one search parameter is required.", kwargs)
+    if not kwargs:
+        raise NoOptionsFoundError("No search parameter provided.")
+    if len(kwargs) > 1:
+        raise MultipleOptionsError("Only one search parameter is allowed.")
 
-    # Відкриття CSV-файлу
+    # Відкриття CSV-файлу з кодуванням UTF-8
     with open(data_file, 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
 
@@ -34,7 +32,7 @@ def search_airport(data_file, **kwargs):
         iata_code = kwargs.get('iata_code')
         if iata_code:
             if not isinstance(iata_code, str) or len(iata_code) != 3 or not iata_code.isupper():
-                raise IATACodeError("Invalid IATA code format.", iata_code)
+                raise AirportNotFoundError("Invalid IATA code format.", iata_code)
 
             for row in reader:
                 if row['iata_code'] == iata_code:
@@ -58,12 +56,9 @@ def search_airport(data_file, **kwargs):
                 raise AirportNotFoundError("Airport not found", name)
             return results
 
-    # Якщо жоден параметр не вказано
-    raise NoOptionsFoundError("No search parameter provided.", kwargs)
-
 
 try:
-    result = search_airport('airport-codes_csv.csv', iata_code='00A')  # Вказано невірний IATA-код
+    result = search_airport('airport-codes_csv.csv', iata_code='NIS')
     print(result)
-except (AirportNotFoundError, CountryNotFoundError, IATACodeError, NoOptionsFoundError, MultipleOptionsError) as e:
+except (AirportNotFoundError, CountryNotFoundError, NoOptionsFoundError, MultipleOptionsError) as e:
     print(e)
