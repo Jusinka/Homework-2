@@ -86,23 +86,17 @@ class Store:
         print(f"Створено новий продукт: {str(new_product)}")
 
 
-# Створення об'єкту магазину
 my_store = Store()
 
-# Імпорт продуктів із файлу
 my_store.import_products('inventory.csv')
 
-# Отримання списку всіх продуктів
 all_products = my_store.get_products_by_type('all')
 for product in all_products:
     print(product)
 
-# Отримання загальної вартості продуктів
 total_price = my_store.get_total_price()
 print(f"Загальна вартість продуктів у магазині: {total_price}грн.")
 
-# Продаж продукту
 my_store.sell_product('Еспресо', 'coffee')
 
-# Поєднання продуктів для створення Latte
 my_store.combine_products('Еспресо', 'Молоко', 'Латте')
