@@ -1,32 +1,33 @@
 import re
 
 def validate_password(password):
+    error_messages = []
 
     if len(password) < 8:
-        return False
-
+        error_messages.append("Пароль должен содержать не менее 8 символов.")
 
     if not re.search(r'[a-z]', password):
-        return False
-
+        error_messages.append("Пароль должен содержать хотя бы одну строчную букву.")
 
     if not re.search(r'[A-Z]', password):
-        return False
-
+        error_messages.append("Пароль должен содержать хотя бы одну заглавную букву.")
 
     if not re.search(r'[0-9]', password):
-        return False
-
+        error_messages.append("Пароль должен содержать хотя бы одну цифру.")
 
     if not re.search(r'[$#@+=-]', password):
-        return False
+        error_messages.append("Пароль должен содержать хотя бы один из символов: $, #, @, +, =, -")
 
-    return True
-
+    if error_messages:
+        return "\n".join(error_messages)
+    else:
+        return "Пароль відповідає вимогам."
 
 user_password = input("Введіть пароль: ")
+validation_result = validate_password(user_password)
 
-if validate_password(user_password):
-    print("Пароль відповідає вимогам.")
+if validation_result == "Пароль відповідає вимогам.":
+    print(validation_result)
 else:
-    print("Пароль не відповідає вимогам.")
+    print("Помилка пароля:",validation_result)
+
