@@ -70,7 +70,7 @@ class Store:
         product1 = None
         product2 = None
 
-        for product in coffee_products:
+        for product in coffee_products + additional_products:
             if product.name == product1_name:
                 product1 = product
             if product.name == product2_name:
@@ -105,3 +105,4 @@ print(f"Загальна вартість продуктів у магазині
 my_store.sell_product('Еспресо', 'coffee')
 
 # Поєднання продуктів для створення Latte
+my_store.combine_products('Еспресо', 'Молоко', 'Латте')
