@@ -68,7 +68,7 @@ def search_airport(data_file, **kwargs):
 
 if __name__ == '__main__':
     try:
-        result = search_airport('airport-codes_csv.csv', iata_code='NS')
+        result = search_airport('airport-codes_csv.csv', iata_code='YKH')
         print(result)
     except (AirportNotFoundError, CountryNotFoundError, NoOptionsFoundError, MultipleOptionsError) as e:
         print(e)
